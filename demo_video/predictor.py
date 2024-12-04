@@ -51,7 +51,7 @@ class VisualizationDemo(object):
         else:
             self.predictor = VideoPredictor(cfg)
 
-    def run_on_video(self, frames):
+    def run_on_video(self, frames, frame_paths=None):
         """
         Args:
             frames (List[np.ndarray]): a list of images of shape (H, W, C) (in BGR order).
@@ -90,7 +90,7 @@ class VisualizationDemo(object):
                 ins.scores = keep_scores
                 ins.pred_classes = keep_labels
                 ins.pred_masks = torch.stack(frame_masks[frame_idx], dim=0)[keep_instance_ids_np]
-            vis_output = visualizer.draw_instance_predictions(predictions=ins, instance_ids=keep_instance_ids_remap)
+            vis_output = visualizer.draw_instance_predictions(predictions=ins, instance_ids=keep_instance_ids_remap, frame_path=frame_paths[frame_idx])
             total_vis_output.append(vis_output)
 
         return predictions, total_vis_output

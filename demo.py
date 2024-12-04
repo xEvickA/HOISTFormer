@@ -16,7 +16,10 @@ if __name__ == '__main__':
     demo_inference = VisualizationDemo(cfg_file, weights_path)
 
     root = args.video_frames_path
-    output_path = './output_results/'
+    video = root[root.rindex('/') + 1:]
+    output_path = './masks/' + video
+    print(output_path)
+    os.makedirs(output_path, exist_ok=True)
     videos = os.listdir(root)
     for vid_idx, vid in enumerate(videos):
         print(f'Processing video: {vid_idx}, total: {len(videos)}')
@@ -25,9 +28,5 @@ if __name__ == '__main__':
         for frm in frames:
             frm_np = cv2.imread(osp.join(root, vid, frm))
             frames_bgr_np.append(frm_np)
-        predictions, vis_output = demo_inference.run_on_video(frames_bgr_np)
-        os.makedirs(osp.join(output_path, vid), exist_ok=True)
-        for frm_idx, vis_img in enumerate(vis_output):
-            frm = vis_img.get_image()
-            save_path = osp.join(output_path, vid, f'output_frm_{frm_idx}.jpg')
-            cv2.imwrite(save_path, frm)
+        frame_paths = [f'{output_path}/{frame}.png' for frame in frames]
+        predictions, vis_output = demo_inference.run_on_video(frames_bgr_np, frame_paths)
