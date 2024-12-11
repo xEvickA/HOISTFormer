@@ -17,9 +17,11 @@ if __name__ == '__main__':
 
     root = args.video_frames_path
     video = root[root.rindex('/') + 1:]
-    output_path = './masks/' + video
-    print(output_path)
+    output_path = f'./masks/{video}'
+    overlay_path = f'./overlays/{video}'
+    
     os.makedirs(output_path, exist_ok=True)
+    os.makedirs(overlay_path, exist_ok=True)
     videos = os.listdir(root)
     for vid_idx, vid in enumerate(videos):
         print(f'Processing video: {vid_idx}, total: {len(videos)}')
@@ -30,3 +32,6 @@ if __name__ == '__main__':
             frames_bgr_np.append(frm_np)
         frame_paths = [f'{output_path}/{frame}.png' for frame in frames]
         predictions, vis_output = demo_inference.run_on_video(frames_bgr_np, frame_paths)
+        for frm_idx, vis_img in enumerate(vis_output):
+            frm = vis_img.get_image()
+            cv2.imwrite(f'{overlay_path}/frame{frm_idx}.jpg', frm)
