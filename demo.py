@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import argparse
 from demo_video.predictor import VisualizationDemo
+import shutil
 
 if __name__ == '__main__':
 
@@ -19,7 +20,10 @@ if __name__ == '__main__':
     video = root[root.rindex('/') + 1:]
     output_path = f'./masks/{video}'
     overlay_path = f'./overlays/{video}'
-    
+    if os.path.exists(output_path):
+        shutil.rmtree(output_path)
+    if os.path.exists(overlay_path):
+        shutil.rmtree(overlay_path)
     os.makedirs(output_path, exist_ok=True)
     os.makedirs(overlay_path, exist_ok=True)
     videos = os.listdir(root)
