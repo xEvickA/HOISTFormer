@@ -10,6 +10,7 @@ conda create --name hoist python=3.8 -y
 conda activate hoist
 conda install pytorch==1.9.0 torchvision==0.10.0 cudatoolkit=11.1 -c pytorch -c nvidia
 pip install -U opencv-python
+pip install pycolmap
 
 git clone https://github.com/facebookresearch/detectron2.git
 cd detectron2
