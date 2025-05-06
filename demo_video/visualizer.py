@@ -74,9 +74,11 @@ class TrackVisualizer(Visualizer):
         else:
             masks = None
 
-        # print(masks[0].shape)
-        if frame_path:
-            mask = np.where(masks[0].mask == 1, 255, 0)
+        if frame_path: 
+            if masks == []:
+                mask = np.zeros((predictions.image_size[1], predictions.image_size[0]), dtype=np.uint8)
+            else:
+                mask = np.where(masks[0].mask == 1, 255, 0)
             cv2.imwrite(frame_path, mask)
 
         colors = [_COLORS[id] for id in instance_ids]
